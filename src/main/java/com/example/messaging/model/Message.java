@@ -16,5 +16,45 @@ public class Message {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    // TODO: Constructors, getters, setters
+    // Constructors
+    public Message() {
+    }
+
+    public Message(String content, Author author) {
+        this.content = content;
+        this.author = author;
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
