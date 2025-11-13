@@ -37,6 +37,51 @@ task runTestDataInitializer {
     description = 'Fills database with test messages'
     
     doLast {
-        // TODO: Реализация отправки POST-запросов
+        def baseUrl = 'http://localhost:8080'
+        def endpoint = '/api/messages'
+        def url = "${baseUrl}${endpoint}"
+        def testMessages = [
+            [content: 'Hello, this is test message 1', authorId: 1],
+            [content: 'Hello, this is test message 2', authorId: 1],
+            [content: 'Hello, this is test message 3', authorId: 2],
+            [content: 'Hello, this is test message 4', authorId: 2],
+            [content: 'Hello, this is test message 5', authorId: 3],
+            [content: 'Hello, this is test message 6', authorId: 3],
+            [content: 'Hello, this is test message 7', authorId: 1],
+            [content: 'Hello, this is test message 8', authorId: 2],
+            [content: 'Hello, this is test message 9', authorId: 3],
+            [content: 'Hello, this is test message 10', authorId: 1]
+        ]
+        
+        println "Starting to send test messages to ${url}"
+        
+        testMessages.eachWithIndex { message, index ->
+            try {
+                def connection = new URL(url).openConnection() as HttpURLConnection
+                connection.requestMethod = 'POST'
+                connection.setRequestProperty('Content-Type', 'application/json')
+                connection.doOutput = true
+                
+                def jsonBody = groovy.json.JsonOutput.toJson(message)
+                connection.outputStream.withWriter { writer ->
+                    writer.write(jsonBody)
+                }
+                
+                def responseCode = connection.responseCode
+                if (responseCode == 200 || responseCode == 201) {
+                    println "✓ Message ${index + 1} sent successfully (HTTP ${responseCode})"
+                } else {
+                    println "✗ Failed to send message ${index + 1} (HTTP ${responseCode})"
+                }
+                
+                connection.disconnect()
+                Thread.sleep(100)
+                
+            } catch (Exception e) {
+                println "✗ Error sending message ${index + 1}: ${e.message}"
+            }
+        }
+        
+        println "Finished sending test messages"
     }
 }
