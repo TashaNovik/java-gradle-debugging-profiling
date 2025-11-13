@@ -23,7 +23,6 @@ public class Message {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    // Constructors
     public Message() {
     }
 
@@ -32,7 +31,6 @@ public class Message {
         this.author = author;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

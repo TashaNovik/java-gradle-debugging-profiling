@@ -24,7 +24,6 @@ public class Author {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
-    // Constructors
     public Author() {
     }
 
@@ -32,7 +31,6 @@ public class Author {
         this.username = username;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -57,7 +55,6 @@ public class Author {
         this.messages = messages;
     }
 
-    // Helper methods
     public void addMessage(Message message) {
         messages.add(message);
         message.setAuthor(this);
